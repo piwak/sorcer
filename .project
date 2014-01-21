@@ -8,4 +8,14 @@
 	</buildSpec>
 	<natures>
 	</natures>
+	<variableList>
+		<variable>
+			<name>ANT_HOME</name>
+			<value>file:/G:/ant</value>
+		</variable>
+		<variable>
+			<name>IGRID_HOME</name>
+			<value>file:/C:/Users/piwak/SORCER/iGrid</value>
+		</variable>
+	</variableList>
 </projectDescription>

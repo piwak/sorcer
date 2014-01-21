@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='ISO-8859-1' standalone='yes'?>
+
+<project name="hashPass" default="all" basedir=".">
+	<property name="module.name" value="hashPass" />
+	<property name="module.run.dir" value="hashPass" />
+
+	<!-- set global properties -->
+	<import file="../../../common-build.xml" />
+	<property name="src" value="./src" />
+	<property name="resources" value="./resources" />
+
+	<!-- The sources to compile -->
+	<patternset id="ant.java">
+		<include name="sorcer/hashPass/**/*.java" />
+		<exclude name="**/SAVE/*.java" />
+		<exclude name="**/BAK/*.java" />
+	</patternset>
+
+	<patternset id="ant.classes">
+		<include name="sorcer/hashPass/provider/**/*.class" />
+	</patternset>
+
+	<patternset id="ant.jars">
+		<include name="hashPass.jar" />
+		<include name="hashPass-dl.jar" />
+	</patternset>
+
+	<path id="project.classpath">
+		<pathelement location="${classes}" />
+		<pathelement location="${sorcer.lib}/sorcer.jar" />
+		<pathelement location="${support.lib}/junit.jar" />
+		<path refid="jini.path" />
+		<path refid="rio.path" />
+	</path>
+
+	<path id="javadocs.classpath">
+		<pathelement location="${common.lib}/rio/serviceui-1.1a.jar" />
+		<pathelement location="${common.lib}rio//ant-ext.jar" />
+		<pathelement location="${ant.home}/lib/ant.jar" />
+	</path>
+
+	<!-- No RMI stubs are required for JERI type of providers -->
+	<target name="compile" depends="compileSources" />
+	<target name="jars" depends="hashPass, copy-run-prv-files" />
+	<target name="hashPass" depends="hashPass.jar, hashPass-dl.jar" />
+	<target name="all" depends="prepare, jars" />
+	
+	<target name="hashPass-dl.jar" depends="compile">
+		<classdepandjar jarfile="${sorcer-dl.lib}/hashPass-dl.jar" files="true" debug="false">
+			<classpath refid="project.classpath" />
+			<in name="sorcer.hashPass.provider" />
+			<topclass name="sorcer.hashPass.provider.HashPass" />
+			<topclass name="sorcer.hashPass.provider.ServiceHashPass" />
+		</classdepandjar>
+	</target>
+
+	<target name="hashPass.jar" depends="compile">
+		<classdepandjar jarfile="${sorcer.lib}/hashPass.jar" files="true" debug="false">
+			<classpath refid="project.classpath" />
+			<in name="sorcer.hashPass.provider" />
+			<topclass name="sorcer.hashPass.provider.HashPass" />
+			<topclass name="sorcer.hashPass.provider.HashPassProvider" />
+			<topclass name="sorcer.hashPass.provider.ServiceHashPass" />
+			<topclass name="sorcer.hashPass.provider.HashPassUI" />
+			<fileset dir="${iGrid.home}/configs">
+				<filename name="sorcer/util/sorcer.env" />
+				<filename name="sorcer/util/data.formats" />
+			</fileset>
+		</classdepandjar>
+	</target>
+
+	<target name="docs" depends="compile">
+		<javadoc packagenames="org.jini.rio.tools.ant.*" maxmemory="100M" sourcepath="${src}" destdir="${docs}/api" Author="true" Version="true" Use="true" windowtitle="TEST" doctitle="TEST" bottom="TEST">
+			<group title="TITLE" packages="sorcer.hashPass.provider*" />
+			<classpath refid="project.classpath" />
+		</javadoc>
+	</target>
+
+	<target name="copy-run-prv-files">
+		<mkdir dir="${iGrid.home}/bin/${module.run.dir}/configs" />
+		<mkdir dir="${iGrid.home}/bin/${module.run.dir}/bin" />
+		<mkdir dir="${iGrid.home}/bin/${module.run.dir}/policy" />
+		<mkdir dir="${iGrid.home}/bin/${module.run.dir}/logs" />
+		<copy todir="${iGrid.home}/bin/${module.run.dir}/configs">
+			<fileset dir="configs">
+				<include name="*" />
+			</fileset>
+		</copy>
+		<copy todir="${iGrid.home}/bin/${module.run.dir}/bin">
+			<fileset dir="bin">
+				<include name="*" />
+			</fileset>
+		</copy>
+		<copy todir="${iGrid.home}/bin/${module.run.dir}/policy">
+			<fileset dir="policy">
+				<include name="*" />
+			</fileset>
+		</copy>
+		<chmod dir="${iGrid.home}/bin/${module.run.dir}/bin" perm="755" includes="*.sh" />
+	</target>
+
+</project>

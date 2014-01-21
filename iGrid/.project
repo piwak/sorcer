@@ -10,4 +10,18 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>com.stateofflow.eclipse.metrics.MetricsNature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>ANT_HOME</name>
+			<value>file:/G:/ant</value>
+		</variable>
+		<variable>
+			<name>IGRID_HOME</name>
+			<value>file:/C:/Users/piwak/SORCER/iGrid</value>
+		</variable>
+		<variable>
+			<name>RIO_HOME</name>
+			<value>file:/C:/Users/piwak/SORCER/iGrid/rio</value>
+		</variable>
+	</variableList>
 </projectDescription>
